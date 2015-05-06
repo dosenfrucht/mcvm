@@ -11,12 +11,12 @@
 mcvm_state *mcvm_state_new()
 {
 	mcvm_state *s = malloc(sizeof(mcvm_state));
-	s->memory = malloc((1 << 30) + (1 << 30) - 1); // TODO malloc 1 << 31
+	s->memory = malloc(1 << 16);
 	if (s->memory == NULL) {
 		fprintf(stderr, "Not enough memory available\n");
 		exit(-1);
 	}
-	s->registers = malloc(16 * 2);
+	s->registers = malloc(16 * 2 + 2);
 	if (s->registers == NULL) {
 		fprintf(stderr, "Not enough memory available\n");
 		exit(-1);
@@ -203,6 +203,23 @@ void mcvm_execute(mcvm_state *s)
 		b0   = mcvm_mem_get_arg0_reg(s);
 		mcvm_reg_set(s, b0, mcvm_mem_imm16(s, wtmp));
 		mcvm_reg_set(s, RSP, wtmp + 2);
+		mcvm_reg_update_rip(s, 2);
+		return;
+	case 0x0E: // pusha
+		wtmp = mcvm_reg_get(s, RSP);
+		for (int i = 0; i < 16; i++) {
+			mcvm_mem_set16(s, wtmp - (2 + 2 * i),
+				mcvm_reg_get(s, i));
+		}
+		mcvm_reg_set(s, RSP, wtmp - 2 * 16);
+		mcvm_reg_update_rip(s, 2);
+		return;
+	case 0x0F: // popa
+		wtmp = mcvm_reg_get(s, RSP);
+		for (int i = 0, j = 15; i < 16; i++, j--) {
+			mcvm_reg_set(s, j, mcvm_mem_imm16(s, wtmp + 2 * i));
+		}
+		mcvm_reg_set(s, RSP, wtmp + 2 * 16);
 		mcvm_reg_update_rip(s, 2);
 		return;
 

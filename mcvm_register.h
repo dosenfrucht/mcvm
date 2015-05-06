@@ -18,8 +18,10 @@ enum mcvm_register {
 	R11 = 11,
 	R12 = 12,
 	R13 = 13,
-	RFLAGS = 14,
-	RIP = 15
+	R14 = 14,
+	R15 = 15,
+	RFLAGS = 16,
+	RIP = 17
 };
 
 uword mcvm_reg_get(mcvm_state *s, ubyte reg);
