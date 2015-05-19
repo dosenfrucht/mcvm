@@ -2,6 +2,7 @@
 #define _MCVM_CORE_H
 
 #include "mcvm_state.h"
+#include "mcvm_mnemonics.h"
 
 mcvm_state *mcvm_state_new();
 void mcvm_state_delete(mcvm_state *s);

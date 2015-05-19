@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 
 	mcbin_parser_free(f);
 
-	mcvm_reg_set(s, RIP, 0);
+	mcvm_reg_set(s, RIP, 0x0042);
 	mcvm_reg_set(s, RSP, 0x7DFE);
 
 	mcvm_run(s);

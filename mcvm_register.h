@@ -10,8 +10,8 @@ enum mcvm_register {
 	RDX = 3,
 	RSI = 4,
 	RDI = 5,
-	RSP = 6,
-	RBP = 7,
+	RBP = 6,
+	RSP = 7,
 	R8  = 8,
 	R9  = 9,
 	R10 = 10,
@@ -21,8 +21,11 @@ enum mcvm_register {
 	R14 = 14,
 	R15 = 15,
 	RFLAGS = 16,
-	RIP = 17
+	RIP = 17,
+	RINTRET = 18
 };
+
+typedef enum mcvm_register mcvm_register;
 
 uword mcvm_reg_get(mcvm_state *s, ubyte reg);
 void mcvm_reg_set(mcvm_state *s, ubyte reg, uword val);
